@@ -25,7 +25,7 @@ def do_autopaginate(parser, token):
     # Check whether there are any other autopaginations are later in this template
     expr = lambda obj: (obj.token_type == TOKEN_BLOCK and \
         len(obj.split_contents()) > 0 and obj.split_contents()[0] == "autopaginate")
-    multiple_paginations = len(filter(expr, parser.tokens)) > 0
+    multiple_paginations = len(list(filter(expr, parser.tokens))) > 0
 
     split = token.split_contents()
     as_index = None
@@ -239,7 +239,7 @@ def paginate(context, window=DEFAULT_WINDOW, hashtag=''):
             else:
                 to_return['getvars'] = ''
         return to_return
-    except KeyError, AttributeError:
+    except (KeyError, AttributeError):
         return {}
 
 register.inclusion_tag('pagination/pagination.html', takes_context=True)(
